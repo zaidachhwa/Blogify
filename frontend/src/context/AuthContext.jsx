@@ -5,6 +5,8 @@ const AuthContext = createContext();
 
 export const ContextProvider = ({ children }) => {
   const navigate = useNavigate();
+
+  // User States
   const [user, setUser] = useState(
     JSON.parse(localStorage.getItem("user")) || null
   );

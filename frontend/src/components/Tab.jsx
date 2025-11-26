@@ -1,7 +1,11 @@
 import { CircleUserRound, Rss, Search } from "lucide-react";
-import React from "react";
+import React, { useState } from "react";
+import { useAuth } from "../context/AuthContext";
 
 const Tab = () => {
+  const [myBlogsTab, setMyBlogsTab] = useState(false);
+  const { blogs, publicBlogs, loading } = useAuth();
+
   return (
     <div className="flex md:w-9/12 mx-auto flex-col gap-4 my-10 p-3">
       {/* 1 */}
@@ -26,11 +30,25 @@ const Tab = () => {
 
         {/* Tab stack  */}
         <div className="flex items-center gap-3">
-          <span className="flex items-center gap-2 border border-gray-300 text-gray-600 rounded-md p-2 px-6 cursor-pointer">
+          <span
+            onClick={() => setMyBlogsTab(false)}
+            className={`flex items-center gap-2 border  rounded-md p-2 px-6 cursor-pointer ${
+              myBlogsTab
+                ? "border-gray-300 text-gray-600"
+                : "border-amber-300 text-amber-600 bg-amber-50"
+            }`}
+          >
             <Rss />
             <span>All Blogs</span>
           </span>
-          <span className="flex items-center gap-2 border border-amber-300 text-amber-600 bg-amber-50 rounded-md p-2 px-6 cursor-pointer">
+          <span
+            onClick={() => setMyBlogsTab(true)}
+            className={`flex items-center gap-2 border  rounded-md p-2 px-6 cursor-pointer ${
+              !myBlogsTab
+                ? "border-gray-300 text-gray-600"
+                : "border-amber-300 text-amber-600 bg-amber-50"
+            }`}
+          >
             <CircleUserRound />
             <span>My Blogs</span>
           </span>
@@ -38,12 +56,46 @@ const Tab = () => {
       </div>
 
       {/* Blogs Grid  */}
-      <div
-        className="w-full mt-10
+
+      {loading ? (
+        <div className="text-3xl flex items-center justify-center mt-10">
+          Loading Please wait..
+        </div>
+      ) : myBlogsTab ? (
+        <div className="flex mt-10 flex-col w-full gap-5">
+          <h3 className="font-bold text-3xl mb-2">My Blogs</h3>
+          <div
+            className="w-full
        grid grid-cols-1 md:grid-cols-2 gap-5"
-      >
-        <div className="border border-gray-300 shadow-md min-h-60 max-h-60 rounded-md hover:border-amber-300 hover:shadow-lg cursor-pointer transition-all"></div>
-      </div>
+          >
+            {blogs
+              ? blogs.map((blog) => (
+                  <div
+                    key={blog._id}
+                    className="border border-gray-300 shadow-md min-h-60 max-h-60 rounded-md hover:border-amber-300 hover:shadow-lg cursor-pointer transition-all"
+                  ></div>
+                ))
+              : "No Blogs to show "}
+          </div>
+        </div>
+      ) : (
+        <div className="flex mt-10 flex-col w-full gap-5">
+          <h3 className="font-bold text-3xl mb-2">Public Blogs</h3>
+          <div
+            className="w-full
+       grid grid-cols-1 md:grid-cols-2 gap-5"
+          >
+            {publicBlogs
+              ? publicBlogs.map((blog) => (
+                  <div
+                    key={blog._id}
+                    className="border border-gray-300 shadow-md min-h-60 max-h-60 rounded-md hover:border-amber-300 hover:shadow-lg cursor-pointer transition-all"
+                  ></div>
+                ))
+              : "No Blogs to show "}
+          </div>
+        </div>
+      )}
     </div>
   );
 };
