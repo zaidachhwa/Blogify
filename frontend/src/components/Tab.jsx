@@ -1,0 +1,51 @@
+import { CircleUserRound, Rss, Search } from "lucide-react";
+import React from "react";
+
+const Tab = () => {
+  return (
+    <div className="flex md:w-9/12 mx-auto flex-col gap-4 my-10 p-3">
+      {/* 1 */}
+      <div className="mb-5 w-full">
+        <h3 className="font-bold text-3xl mb-2">All Articles</h3>
+        <p className="tracking-wide md:w-2/3 text-gray-600">
+          Find or list tools that will help designers build to last. Simplify
+          design with our comprehensive and carefully vetted library from start
+        </p>
+      </div>
+      {/* 2 */}
+      <div className="w-full flex flex-col md:flex-row gap-6 items-center justify-center">
+        <div className="flex p-2 border-2 border-gray-300 text-gray-600  rounded-md w-full md:w-1/2 items-center gap-2">
+          <Search />
+          <input
+            type="text"
+            className="w-full
+             outline-0"
+            placeholder="Search Blogs"
+          />
+        </div>
+
+        {/* Tab stack  */}
+        <div className="flex items-center gap-3">
+          <span className="flex items-center gap-2 border border-gray-300 text-gray-600 rounded-md p-2 px-6 cursor-pointer">
+            <Rss />
+            <span>All Blogs</span>
+          </span>
+          <span className="flex items-center gap-2 border border-amber-300 text-amber-600 bg-amber-50 rounded-md p-2 px-6 cursor-pointer">
+            <CircleUserRound />
+            <span>My Blogs</span>
+          </span>
+        </div>
+      </div>
+
+      {/* Blogs Grid  */}
+      <div
+        className="w-full mt-10
+       grid grid-cols-1 md:grid-cols-2 gap-5"
+      >
+        <div className="border border-gray-300 shadow-md min-h-60 max-h-60 rounded-md hover:border-amber-300 hover:shadow-lg cursor-pointer transition-all"></div>
+      </div>
+    </div>
+  );
+};
+
+export default Tab;
