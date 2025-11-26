@@ -68,7 +68,7 @@ const Tab = () => {
             className="w-full
        grid grid-cols-1 md:grid-cols-2 gap-5"
           >
-            {blogs
+            {blogs && blogs.length !== 0
               ? blogs.map((blog) => (
                   <div
                     key={blog._id}
