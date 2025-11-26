@@ -1,6 +1,8 @@
 import { BookDashed } from "lucide-react";
+import { useAuth } from "../context/AuthContext";
 
 const Hero = () => {
+  const { user } = useAuth();
   return (
     <div
       className="bg-gray-100 md:w-full -z-10 md:pt-26
@@ -11,7 +13,9 @@ const Hero = () => {
         Blog
       </span>
       {/* Title  */}
-      <h1 className="text-5xl font-bold ">Insight and Updates</h1>
+      <h1 className="text-5xl font-bold ">
+        {"Hello " + user?.name + " !" || "Insight and Updates"}
+      </h1>
       {/* Paragraph  */}
       <p className="   ">
         A collection of hand picked articles for freelancers, by

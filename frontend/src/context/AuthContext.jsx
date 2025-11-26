@@ -11,9 +11,33 @@ export const ContextProvider = ({ children }) => {
   const [userToken, setUserToken] = useState(
     localStorage.getItem("token") || null
   );
+
+  // Blog States
+
+  const [publicBlogs, setPublicBlogs] = useState([]);
+  const [blogs, setBlogs] = useState([]);
+
+  // Loading State
+  const [loading, setLoading] = useState(true);
+
   return (
     <AuthContext.Provider
-      value={{ user, setUser, userToken, setUserToken, navigate }}
+      value={{
+        user,
+        setUser,
+        userToken,
+        setUserToken,
+        navigate,
+        // Public Blogs
+        publicBlogs,
+        setPublicBlogs,
+        // My Blogs
+        blogs,
+        setBlogs,
+        // Loading states
+        loading,
+        setLoading,
+      }}
     >
       {children}
     </AuthContext.Provider>
