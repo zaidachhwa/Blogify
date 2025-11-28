@@ -8,7 +8,6 @@ export const getPublicBlogs = async (setPublicBlogs, setLoading) => {
         authorization: `Bearer ${localStorage.getItem("token")}`,
       },
     });
-    console.log(res.data?.data);
     setPublicBlogs(res.data?.data);
   } catch (error) {
     toast.error("Error Fetching Public Blogs");
@@ -24,11 +23,27 @@ export const getMyBlogs = async (setBlogs, setLoading) => {
         authorization: `Bearer ${localStorage.getItem("token")}`,
       },
     });
-    console.log(res.data?.data);
+
     setBlogs(res.data?.data);
   } catch (error) {
     toast.error("Error Fetching Blogs");
   } finally {
     setLoading(false);
+  }
+};
+
+export const createBlogs = async (data, navigate) => {
+  try {
+    const res = await axiosInstance.post("/blogs/create", data, {
+      headers: {
+        authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    });
+
+    toast.success(res?.data?.message);
+    navigate("/");
+  } catch (error) {
+    console.log(error);
+    toast.error("Error creating blogs.");
   }
 };

@@ -18,6 +18,7 @@ export const ContextProvider = ({ children }) => {
 
   const [publicBlogs, setPublicBlogs] = useState([]);
   const [blogs, setBlogs] = useState([]);
+  const [editBlog, setEditBlog] = useState({});
 
   // Loading State
   const [loading, setLoading] = useState(true);

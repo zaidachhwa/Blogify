@@ -1,8 +1,17 @@
-import { CircleUserRound, Rss, Search } from "lucide-react";
+import {
+  CircleUserRound,
+  Edit2,
+  Eye,
+  EyeOff,
+  RefreshCcw,
+  Rss,
+  Search,
+} from "lucide-react";
 import React, { useState } from "react";
 import { useAuth } from "../context/AuthContext";
+import { Link } from "react-router-dom";
 
-const Tab = () => {
+const Tab = ({ fetch }) => {
   const [myBlogsTab, setMyBlogsTab] = useState(false);
   const { blogs, publicBlogs, loading } = useAuth();
 
@@ -17,7 +26,7 @@ const Tab = () => {
         </p>
       </div>
       {/* 2 */}
-      <div className="w-full flex flex-col md:flex-row gap-6 items-center justify-center">
+      <div className="w-full flex flex-col md:flex-row gap-6 items-start justify-center">
         <div className="flex p-2 border-2 border-gray-300 text-gray-600  rounded-md w-full md:w-1/2 items-center gap-2">
           <Search />
           <input
@@ -29,7 +38,7 @@ const Tab = () => {
         </div>
 
         {/* Tab stack  */}
-        <div className="flex items-center gap-3">
+        <div className="flex flex-wrap items-center gap-3">
           <span
             onClick={() => setMyBlogsTab(false)}
             className={`flex items-center gap-2 border  rounded-md p-2 px-6 cursor-pointer ${
@@ -52,6 +61,16 @@ const Tab = () => {
             <CircleUserRound />
             <span>My Blogs</span>
           </span>
+          <span
+            onClick={fetch}
+            className={`flex items-center gap-2 border  rounded-md p-2 px-6 cursor-pointer ${
+              !loading
+                ? "border-gray-300 text-gray-600"
+                : "border-amber-300 text-amber-600 bg-amber-50"
+            }`}
+          >
+            <RefreshCcw className={`${loading && "animate-spin"}`} />
+          </span>
         </div>
       </div>
 
@@ -72,8 +91,41 @@ const Tab = () => {
               ? blogs.map((blog) => (
                   <div
                     key={blog._id}
-                    className="border border-gray-300 shadow-md min-h-60 max-h-60 rounded-md hover:border-amber-300 hover:shadow-lg cursor-pointer transition-all"
-                  ></div>
+                    className="border border-gray-300 shadow-md min-h-60 max-h-60 rounded-md hover:border-amber-300 hover:shadow-lg cursor-pointer transition-all p-4 flex flex-col items-start justify-between bg-gray-50 relative group"
+                  >
+                    <Link
+                      to={`/edit/${blog._id}`}
+                      className="absolute top-3 right-3 hidden group-hover:block"
+                    >
+                      <Edit2 size={16} className="t" />
+                    </Link>
+                    <div className="">
+                      <h4 className="text-3xl md:text-4xl font-semibold tracking-wide">
+                        {blog?.title || "Error fetching title"}
+                      </h4>
+                      <div className="w-full mt-5">
+                        <p className="text-gray-600 w-full h-fit">
+                          {blog?.body.length > 200
+                            ? blog?.body.slice(0, 200) + "..."
+                            : blog?.body}
+                        </p>
+                      </div>
+                    </div>
+                    <div className="flex border-t border-gray-200 pt-2 items-center w-full justify-between">
+                      <span className="font-semibold italic">
+                        Author : Myself
+                      </span>
+                      <span
+                        className={`${
+                          blog.visibility === "public"
+                            ? "text-amber-400"
+                            : "text-red-500"
+                        }`}
+                      >
+                        {blog?.visibility === "public" ? <Eye /> : <EyeOff />}
+                      </span>
+                    </div>
+                  </div>
                 ))
               : "No Blogs to show "}
           </div>
@@ -89,8 +141,29 @@ const Tab = () => {
               ? publicBlogs.map((blog) => (
                   <div
                     key={blog._id}
-                    className="border border-gray-300 shadow-md min-h-60 max-h-60 rounded-md hover:border-amber-300 hover:shadow-lg cursor-pointer transition-all"
-                  ></div>
+                    className="border border-gray-300 shadow-md min-h-60 max-h-60 rounded-md hover:border-amber-300 hover:shadow-lg cursor-pointer transition-all p-4 flex flex-col items-start justify-between"
+                  >
+                    <div className="">
+                      <h4 className="text-3xl md:text-4xl font-semibold tracking-wide">
+                        {blog?.title || "Error fetching title"}
+                      </h4>
+                      <div className="w-full mt-5">
+                        <p className="text-gray-600 w-full h-fit">
+                          {blog?.body.length > 200
+                            ? blog?.body.slice(0, 200) + "..."
+                            : blog?.body}
+                        </p>
+                      </div>
+                    </div>
+                    <div className="flex border-t border-gray-200 pt-2 items-center w-full justify-between">
+                      <span className="font-semibold italic">
+                        Author : {blog?.author?.name || "Unknown"}
+                      </span>
+                      <span className="">
+                        {new Date(blog?.createdAt).toDateString()}
+                      </span>
+                    </div>
+                  </div>
                 ))
               : "No Blogs to show "}
           </div>
